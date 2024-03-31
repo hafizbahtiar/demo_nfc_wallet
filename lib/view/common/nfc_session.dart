@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 Future<void> startSession({
-  required BuildContext context,
+  required context,
   required Future<String?> Function(NfcTag) handleTag,
   String alertMessage = 'Hold your device near the item.',
 }) async {
@@ -69,7 +69,6 @@ class _AndroidSessionDialog extends StatefulWidget {
 
 class _AndroidSessionDialogState extends State<_AndroidSessionDialog> {
   String? _alertMessage;
-
   String? _errorMessage;
 
   @override

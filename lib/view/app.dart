@@ -82,7 +82,7 @@ class _Home extends StatelessWidget {
               title: const Text('About'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => Navigator.push(context, MaterialPageRoute(
-                builder: (context) => AboutPage(),
+                builder: (context) => const AboutPage(),
               )),
             ),
           ]),

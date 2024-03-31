@@ -4,36 +4,38 @@ import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
+  const AboutPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('About'),
+        title: const Text('About'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(2),
+        padding: const EdgeInsets.all(2),
         children: [
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
             builder: (context, ss) => FormSection(children: [
               FormRow(
-                title: Text('App Name'),
+                title: const Text('App Name'),
                 trailing: Text(ss.data?.appName ?? ''),
               ),
               FormRow(
-                title: Text('Version'),
+                title: const Text('Version'),
                 trailing: Text(ss.data?.version ?? ''),
               ),
               FormRow(
-                title: Text('Build Number'),
+                title: const Text('Build Number'),
                 trailing: Text(ss.data?.buildNumber ?? ''),
               ),
             ]),
           ),
           FormSection(children: [
             FormRow(
-              title: Text('Privacy Policy'),
-              trailing: Icon(Icons.open_in_new),
+              title: const Text('Privacy Policy'),
+              trailing: const Icon(Icons.open_in_new),
               onTap: () => launch('https://nfcmanager.naokiokada.com/privacy-policy/'),
             ),
           ]),

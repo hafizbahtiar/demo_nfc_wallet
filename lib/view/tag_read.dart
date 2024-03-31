@@ -76,7 +76,13 @@ class TagReadPage extends StatelessWidget {
             final tag = model.tag;
             final additionalData = model.additionalData;
             if (tag != null && additionalData != null) {
-              return _TagInfo(tag, additionalData);
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _TagInfo(tag, additionalData),
+                  ],
+                ),
+              );
             }
             return const SizedBox.shrink();
           }),
@@ -261,9 +267,9 @@ class _TagInfo extends StatelessWidget {
       if (tech is FeliCa) {
         final manufacturerParameter =
             additionalData['manufacturerParameter'] as Uint8List?;
-        tagWidgets.add(FormRow(
-          title: const Text('Type'),
-          subtitle: const Text('FeliCa'),
+        tagWidgets.add(const FormRow(
+          title: Text('Type'),
+          subtitle: Text('FeliCa'),
         ));
         tagWidgets.add(FormRow(
           title: const Text('Current IDm'),
@@ -283,9 +289,9 @@ class _TagInfo extends StatelessWidget {
 
       tech = Iso15693.from(tag);
       if (tech is Iso15693) {
-        tagWidgets.add(FormRow(
-          title: const Text('Type'),
-          subtitle: const Text('ISO15693'),
+        tagWidgets.add(const FormRow(
+          title: Text('Type'),
+          subtitle: Text('ISO15693'),
         ));
         tagWidgets.add(FormRow(
           title: const Text('Identifier'),
@@ -303,9 +309,9 @@ class _TagInfo extends StatelessWidget {
 
       tech = Iso7816.from(tag);
       if (tech is Iso7816) {
-        tagWidgets.add(FormRow(
-          title: const Text('Type'),
-          subtitle: const Text('ISO7816'),
+        tagWidgets.add(const FormRow(
+          title: Text('Type'),
+          subtitle: Text('ISO7816'),
         ));
         tagWidgets.add(FormRow(
           title: const Text('Identifier'),
