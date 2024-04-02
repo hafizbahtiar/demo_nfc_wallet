@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:demo_nfc_wallet/utility/extensions.dart';
 import 'package:demo_nfc_wallet/view/common/form_row.dart';
 import 'package:demo_nfc_wallet/view/common/nfc_session.dart';
 import 'package:demo_nfc_wallet/view/ndef_record.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:provider/provider.dart';
@@ -93,11 +92,14 @@ class TagReadPage extends StatelessWidget {
 }
 
 class _TagInfo extends StatelessWidget {
-  const _TagInfo(this.tag, this.additionalData);
+  _TagInfo(this.tag, this.additionalData);
 
   final NfcTag tag;
 
   final Map<String, dynamic> additionalData;
+
+  final Uint8List mJpnaid = Uint8List.fromList(
+      [0xA0, 0x00, 0x00, 0x00, 0x74, 0x4A, 0x50, 0x4E, 0x00, 0x10]);
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +122,8 @@ class _TagInfo extends StatelessWidget {
         title: const Text('Tech List'),
         subtitle: Text(_getTechListString(tag)),
       ));
+
+      print(readDataFromChipCard(mJpnaid.toHexString()));
 
       tech = NfcA.from(tag);
       if (tech is NfcA) {
@@ -496,4 +500,27 @@ String _getNdefType(String code) {
     default:
       return 'Unknown';
   }
+}
+
+Future<String?> readDataFromChipCard(String aid) async {
+  const platform = MethodChannel('chip_card_reader');
+
+  try {
+    final String data = await platform.invokeMethod('readData', {'aid': aid});
+    return data;
+  } on PlatformException catch (e) {
+    print("Failed to read data from chip card: '${e.message}'.");
+    return null;
+  }
+}
+
+String decodeContent(String data, int offset, int length) {
+  int endIndex = offset + length;
+
+  if (endIndex > data.length) {
+    return 'Error: Offset + length exceeds data length';
+  }
+
+  String extractedData = data.substring(offset, endIndex);
+  return extractedData;
 }
